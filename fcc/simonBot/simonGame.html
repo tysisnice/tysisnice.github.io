@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+  <!--
+Author: Tyson Hauke
+Notes:
+-->
+<head>
+  <!--    links:    -->
+  <!--  Bootstrap stylesheet
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">    -->
+  <!--  Google fonts:
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Nunito|Pacifico" rel="stylesheet">     -->
+  <!--    Imported libraries:   -->
+  <!--  JQuery:-->
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
+  <!--  JQuery.Transit: -->
+  <script src='http://ricostacruz.com/jquery.transit/jquery.transit.min.js'></script>
+  <!--  Angular js:
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>   -->
+  <!--  Bootstrap:
+  <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>    -->
+  <!--  Font Awesome:
+  <script src="https://use.fontawesome.com/4c71c17874.js"></script>    -->
+  <!-- Ripple Effects:  -->
+
+  
+  <title>Simon Game</title>
+  
+  <style>
+  /* MATERIAL DESIGN RIPPLE ////////////////////////////////////////////////*/
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+.ripple-wrapper {
+	display: block;
+	position: absolute;
+	background: rgba(255,255,255,0.4);
+	border-radius: 100%;
+	-webkit-transform: scale(0);
+	-ms-transform: scale(0);
+	-o-transform: scale(0);
+	transform: scale(0);
+}
+.ripple-wrapper.animated {
+	animation: ripple 0.65s linear;
+	-webkit-animation: ripple 0.65s linear;
+	-moz-animation: ripple 0.65s linear;
+	-o-animation: ripple 0.65s linear;
+}
+.has-ripple {
+	overflow: hidden;
+	position: relative;
+	user-select: none;
+	outline: none;
+}
+@keyframes ripple {
+	100% {
+		-webkit-transform: scale(2.5);
+		-ms-transform: scale(2.5);
+		-o-transform: scale(2.5);
+		transform: scale(2.5);
+		opacity: 0;
+	}
+}
+@-webkit-keyframes ripple {
+	100% {
+		-webkit-transform: scale(2.5);
+		-ms-transform: scale(2.5);
+		-o-transform: scale(2.5);
+		transform: scale(2.5);
+		opacity: 0;
+	}
+}
+@-o-keyframes ripple {
+	100% {
+		-webkit-transform: scale(2.5);
+		-ms-transform: scale(2.5);
+		-o-transform: scale(2.5);
+		transform: scale(2.5);
+		opacity: 0;
+	}
+}
+@-moz-keyframes ripple {
+	100% {
+		-webkit-transform: scale(2.5);
+		-ms-transform: scale(2.5);
+		-o-transform: scale(2.5);
+		transform: scale(2.5);
+		opacity: 0;
+	}
+}</style>
+<script>
+  //  material ripple
+$.fn.materialripple = function(options) {
+	var defaults = {
+		rippleClass: 'ripple-wrapper'
+	}
+	$.extend(defaults, options);
+
+	$('body').on('animationend webkitAnimationEnd oAnimationEnd', '.' + defaults.rippleClass, function () {
+    removeRippleElement(this);
+});
+
+	var addRippleElement = function(element, e) {
+		$(element).append('<span class="added '+defaults.rippleClass+'"></span>');
+		newRippleElement = $(element).find('.added');
+		newRippleElement.removeClass('added');
+
+		// get Mouse Position
+		var mouseX = e.pageX;
+		var mouseY = e.pageY;
+
+		// for each ripple element, set sizes
+		elementWidth = $(element).outerWidth();
+		elementHeight = $(element).outerHeight();
+		d = Math.max(elementWidth, elementHeight);
+		newRippleElement.css({'width': d, 'height': d});
+
+		var rippleX = e.clientX - $(element).offset().left - d/2 + $(window).scrollLeft();
+		var rippleY = e.clientY - $(element).offset().top - d/2 + $(window).scrollTop();
+
+		// Position the Ripple Element
+		newRippleElement.css('top', rippleY+'px').css('left', rippleX+'px').addClass('animated');
+	}
+
+	var removeRippleElement = function($element) {
+		$element.remove();
+	}
+
+	// add Ripple-Wrapper to all Elements
+	$(this).addClass('has-ripple');
+
+	// Let it ripple on click
+	$(this).bind('click', function(e){
+		addRippleElement(this, e);
+	});
+	/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+}</script>
+ 
+ 
+ <style>
+  body{
+    font-family:"Trebuchet MS", Helvetica, sans-serif;
+    font-size:24px;
+    overflow:hidden;
+    position:fixed;
+    height:100%;
+    width:100%;
+    text-align:center;
+  }</style>
+  <script>
+    $('body').hide();
+  </script>
+  <style>
+  h1{
+    font-size:80px;
+    padding-bottom:14px;
+    padding-top:-10px;
+  }
+  button{
+    text-decoration:none;
+    margin:12px;
+    padding:20px;
+    font-size:40px;
+    background-color:black;
+    border-radius:25px;
+    border-color:black;
+    color:white;
+  }button:hover{
+    -moz-box-shadow: 0px 0px 12px 2px #eee;
+	  -webkit-box-shadow: 0px 0px 12px 2px #e;
+	  box-shadow: 0px 0px 12px 2px #eee;
+    cursor:pointer;
+    color:white;
+  }button:active{
+    -moz-box-shadow: 0px 0px 4px 2px #aaa;
+	  -webkit-box-shadow: 0px 0px 4px 2px #aaa;
+	  box-shadow: 0px 0px 4px 2px #aaa;
+  }
+  .btn:focus {
+    outline: none;
+    outline:0;
+  }
+  .simonBot{
+    overflow:hidden;
+    background-color:#111;
+    z-index:30;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    height:7274px;
+    width:7274px;
+    border-radius:10000px;
+    -moz-box-shadow: 0px 0px 5px 2px #222;
+	  -webkit-box-shadow: 0px 0px 5px 2px #222;
+	  box-shadow: 0px 0px 5px 2px #222;
+  }.simonBot:hover{
+    cursor : pointer;
+    -moz-box-shadow: 0px 0px 8px 2px #222;
+	  -webkit-box-shadow: 0px 0px 8px 2px #222;
+	  box-shadow: 0px 0px 8px 2px #222;
+    
+  }.simonBot:active{
+    background-color:#363636;
+  }
+  .gameBox{
+    color:#eee;
+    text-align:center;
+    position:absolute;
+    top:50%;
+    left:50%;
+    background-color:white;
+    border-radius:108px;
+    margin-top:-300px;
+    margin-left:-300px;
+    height:600px;
+    width:600px;
+    padding:0px;
+    z-index:5;
+  }
+  .gBtn{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    outline: none;
+    height:280px;
+    width:280px;
+    border-radius:108px;
+    padding:auto;
+    margin:10px;
+    background: rgba(255, 1, 1, 0.85);
+    float:left;
+    opacity:0.85;
+    z-index:6;
+    text-align:center;
+  }.gBtn:hover{
+    cursor:pointer;
+    background: rgba(255, 1, 1, 0.75);
+    -moz-box-shadow: 0px 0px 10px 2px #777;
+	  -webkit-box-shadow: 0px 0px 10px 2px #777;
+	  box-shadow: 0px 0px 10px 2px #777;
+  }.gBtn:active{
+    border-radius:110px;
+    -moz-box-shadow: 0px 0px 4px 2px #aaa;
+	  -webkit-box-shadow: 0px 0px 4px 2px #aaa;
+	  box-shadow: 0px 0px 4px 2px #aaa;
+    background: rgba(255, 1, 1, 0.79);
+  }.gBtn:focus{
+    outline: none;
+    outline:0;
+  }
+  .redScreen{
+    position:fixed;
+    margin-left:-8px;
+    margin-top:-8px;
+    width:100%;
+    height:100%;
+    background-color:red;
+    z-index:51;
+  }
+  .greenScreen{
+    position:fixed;
+    margin-left:-8px;
+    margin-top:-8px;
+    width:100%;
+    height:100%;
+    background-color:#1f3;
+    z-index:50;
+  }
+  
+  
+  #b1{background: rgba(2, 255, 1, 0.9);}
+    #b1:hover{background: rgba(2, 255, 1, 0.85);}
+      #b1:active{background: rgba(2, 255, 1, 0.9);}
+      
+  #b3{background: rgba(255, 255, 1, 0.9);}
+    #b3:hover{background: rgba(255, 255, 1, 0.85);}
+      #b3:active{background: rgba(255, 255, 1, 0.9);}
+      
+  #b4{background: rgba(2, 1, 255, 0.9);}
+    #b4:hover{background: rgba(2, 1, 255, 0.85);}
+      #b4:active{background: rgba(2, 1, 255, 0.9);}
+  </style>
+</head>
+<body>
+  <div class='redScreen'></div>
+  <div class='greenScreen'></div>
+  <div class='gameBox'>
+    <div class='gBtn ripple' id='b1' value='1' style='background-color: green;'>
+    </div>
+    <div class='gBtn ripple' id='b2' value='2'>
+    </div>
+    <div class='gBtn ripple' id='b3' value='3' style='background-color: #fe0;'>
+    </div>
+    <div class='gBtn ripple' id='b4' value='4' style='background-color: blue;'>
+    </div>
+    
+    <div class='simonBot'>
+      <div class='gameBox' style='z-index:31;background-color:#262626;' id='menu'>
+        <br><br>
+        <h1>Simon Bot</h1>
+        <h2><i>Can you keep up?</i></h2>
+        <br><br>
+        <button class='btn ripple newRegular'>Play Easy</button>
+        <button class='btn ripple newStrict'>Play Hard</button>
+      </div>
+      
+      <div class='gameBox' style='z-index:31;background-color:#262626;' id='menuMidGame'>
+        <br><br>
+        <h1>Simon Bot</h1>
+        <h2>Lives: <span id='lives'>3</span>&emsp;&emsp;Score: <span id='score'>0</span></h2>
+        <br><br>
+        <button class='btn ripple restart'>Restart</button>
+        <button class='btn ripple playOn'>Play on</button>
+      </div>
+      
+      <div class='gameBox endPage' style='z-index:34;background-color:#333;'>
+        <br><br>
+        <h1><span class='endMessage'></span></h1>
+        <h2>Final Score: <span id='score'>0</span></h2>
+        <br><br>
+        <button class='btn ripple playAgain'>Play Again!</button>
+      </div>
+    </div>
+  </div>
+  
+  
+<script>////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+// Hide unwanted elements
+
+  document.activeElement.blur();
+  $('.endPage').hide();
+  $('.redScreen').hide();
+  $('.greenScreen').hide();
+  $('.gBtn').hide();
+  $('#menuMidGame').hide();
+  $('#menu').hide();
+  $('body').show();
+// set up all global variables /////////////////////////////////////////////
+  var timing,
+    str = false;
+    currentlyTiming = false;
+    replaySimon = false,
+    playing = false,
+    playerMove = false,
+    strict = false;
+    simonSays = [],
+    simonLevel = -2,
+    highScore = 0,
+    playerAction = 0,
+    time = 1000,
+    reachThisScoreToWin = 20,
+    lives = 3,
+    aud1 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'),
+    aud2 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'),
+    aud3 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3'),
+    aud4 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3');
+  aud1.oncanplaythrough = aud1;
+  aud2.oncanplaythrough = aud2;
+  aud3.oncanplaythrough = aud3;
+  aud4.oncanplaythrough = aud4;
+    
+  
+  ////////////////////////////////////////////////////////////////////////////
+  // simon gives the sequence
+  function simonSpeaks(){
+    currentlyTiming = true;
+    playerMove = false;
+    playerLevel = 0;
+    speakLevel = 0;
+    time = (1000 - (simonLevel * 30));
+    console.log(time);
+    if (!replaySimon){
+      simonLevel++;
+    }
+    // simon speaks a step in the sequence
+    function speak(){
+      var q = simonSays[speakLevel];
+      simonButtonPress(q);
+      
+      if ( speakLevel === simonLevel ) {
+        clearInterval(timing);
+        setTimeout(function(){
+          playerMove = true;
+          $('.simonBot').transition({height:'76px',width:'76px',x:'-50%',y:'-50%',opacity:1,delay:50});
+        },time);
+      }
+      speakLevel++;
+    }
+    
+    // start speaking
+    timing = setInterval(speak, time);
+  }
+  
+  function simonButtonPress(button){
+    var b = button;
+    var obj = {'height':'62px', 'width':'62px'};
+    var x = 'x';
+    var y = 'y';
+    setTimeout(function(){
+      var butt = playerMove;
+      playerMove = false;
+      $('#b'+b).trigger('click');
+      playerMove = butt;
+      buttonSound(b);
+    }, time/3);
+    
+    switch(b){
+      case 1:
+        obj[x] = '-180px';
+        obj[y] = '-180px';
+        break;
+      case 2:
+        obj[x] = '120px';
+        obj[y] = '-180px';
+        break;
+      case 3:
+        obj[x] = '-180px';
+        obj[y] = '120px';
+        break;
+      case 4:
+        obj[x] = '120px';
+        obj[y] = '120px';
+        break;
+      default:
+        console.log('not a valid button');
+        break;
+    }
+    $('.simonBot').transition(obj, time/3)
+      .transition({scale:1.15},time/4)
+      .transition({scale:1},time/4);
+  }
+  //////////////////////////////////////////////////////////////////////////
+  
+  
+  
+  
+  //////////////////////////////////////////////////////////////////////////
+  // player presses a button to follow sequence during player turn
+  function playerBtnPress(bn){
+    playerAction = bn;
+    if (playing && playerMove){
+      var simonAction = simonSays[playerLevel];
+      if (playerAction === simonAction){
+        buttonSound(playerAction);
+        playerLevel++;
+        if (highScore < playerLevel){
+          highScore = playerLevel;
+          $('#score').text(highScore);
+        }
+        if (playerLevel === reachThisScoreToWin){
+          playerMove = false;
+          setTimeout(function(){winGame();}, 1000);
+          return false;
+        }
+        var m = simonLevel + 1;
+        if (playerLevel === m){
+        playerMove = false;
+          setTimeout(function(){simonSpeaks();}, time/2);
+        }
+      }
+      else{
+        playerMove = false;
+        playerMistake();
+        lives--;
+        simonLevel--;
+        $('#lives').text(lives);
+        if (lives === 0){
+          loseGame();
+          return false;
+        }
+        else{
+          replaySimon = true;
+          setTimeout(function(){simonSpeaks();}, time+time/3);
+          replaySimon = false;
+        }
+      }
+    }
+  }//////////////////////////////////////////////////////////////////////////
+  
+  
+  function startGame(strictMode){
+    str = strictMode;
+    playerScore = 0;
+    highScore = 0;
+    simonScore = 0;
+    simonLevel = -1;
+    playing = true;
+    playerMove = false;
+    simonSays = [];
+    if (strictMode){
+      lives = 1;
+      reachThisScoreToWin = 25;
+      time = time - 100;
+    }
+    else{
+      lives = 3;
+      reachThisScoreToWin = 20;
+    }
+    $('#lives').text(lives);
+    $('#score').text('0');
+    $('#menu').fadeOut();
+    $('.simonBot').transition({height:'74px',width:'74px',x:'-50%',y:'-50%'});
+    for (i = 0; i <= reachThisScoreToWin; i++){
+      var newButton = ((Math.floor(Math.random() * 4)) + 1);
+      simonSays.push(newButton);
+    }
+    console.log(simonSays);
+    simonSpeaks();
+  }
+  
+  
+  $(function(){
+		$('.ripple').materialripple();
+	});
+  
+  
+  function buttonSound(button){
+    switch (button){
+      case 1:
+        aud1.play(); break;
+      case 2:
+        aud2.play(); break;
+      case 3:
+        aud3.play(); break;
+      case 4:
+        aud4.play(); break;
+      default: break;
+    }
+  }
+  
+  var buttonSound = b => b==1 ? aud1.play() :  b==2 ? aud2.play() : b==3 ?  aud3.play() : aud4.play();
+  
+  function loseGame(){
+    playerMistake();
+    setTimeout(function(){playerMistake();},300);
+    setTimeout(function(){
+      $('.simonBot').transition({height:'800px',width:'800px',delay:400});
+      $('.endMessage').text('Game Over');
+      $('#score').text(highScore);
+      setTimeout(function(){$('.endPage').fadeIn();},700);
+    },1100);
+  }
+  
+  function winGame(){
+    aud1.play();
+    setTimeout(function(){aud2.play();
+      setTimeout(function(){aud3.play();
+        setTimeout(function(){aud4.play(); $('.greenScreen').fadeIn();
+        },300);
+      },300);
+    },300);
+    setTimeout(function(){
+      $('.greenScreen').fadeOut();
+      $('.simonBot').transition({height:'800px',width:'800px',delay:400});
+      $('.endPage').fadeIn();
+      $('.endMessage').text('Winner!');
+      var goop = str ? 25 : 20;
+      $('#score').text(goop);
+    },1100);
+  }
+  
+  function playerMistake(){
+    $('.simonBot').transition({height:'76px',width:'76px',x:'-50%',y:'-50%',opacity:1,delay:200});
+    aud3.play();
+    aud4.play();
+    aud1.play();
+    aud2.play();
+    $('.redScreen').fadeIn().fadeOut();
+  }
+  
+  function openMenu(){
+    
+    if (playerMove && !anotherButton){
+      $('.simonBot').transition({height:'800px',width:'800px',x:'-50%',y:'-50%'});
+      $('#menuMidGame').show();
+    }
+    anotherButton = false;
+  }
+  
+  function restart(){
+    playerMistake();
+    $('#menuMidGame').fadeOut();
+    $('.simonBot').transition({height:'76px',width:'76px',opacity:1,delay:100})
+      .transition({height:'800px',width:'800px',delay:100});
+    setTimeout(function(){
+      $('#menu').fadeIn();
+    },1200);
+  }
+  
+  function playOn(){
+    anotherButton = true;
+    $('#menuMidGame').fadeOut();
+    $('.simonBot').transition({height:'76px',width:'76px',opacity:1});
+  }
+  ///////////////////////////////////////////////////////////////////////////
+  // intro animations and map buttons to functions
+  $(document).ready(function(){
+    
+    setTimeout(function(){$('.gBtn').fadeIn();}, 640);
+    setTimeout(function(){
+      $('#menu').fadeIn();
+      $('.gameBox').css('overflow', 'hidden');
+    }, 950);
+    $('.simonBot')
+    .css({height:'400%',width:'400%',opacity:0.7})
+    .transition({height:'76px',width:'76px',opacity:1,delay:200})
+    .transition({height:'800px',width:'800px',delay:400});
+    
+    
+    
+    //map buttons to functions
+    $('#b1').click(function(){playerBtnPress(1);});
+    $('#b2').click(function(){playerBtnPress(2);});
+    $('#b3').click(function(){playerBtnPress(3);});
+    $('#b4').click(function(){playerBtnPress(4);});
+    
+    $('.newRegular').click(function(){startGame(false);});
+    
+    $('.newStrict').click(function(){startGame(true);});
+    
+    $('.simonBot').click(function(){openMenu();});
+    
+    $('.restart').click(function(){restart();});
+    
+    $('.playOn').click(function(){playOn();});
+    
+    $('.playAgain').click(function(){
+      $('.endPage').fadeOut(500);
+      $('.simonBot').transition({height:'76px',width:'76px',opacity:1,delay:100})
+      .transition({height:'800px',width:'800px',delay:100});
+      setTimeout(function(){
+        $('#menu').fadeIn();
+      },700);
+    });
+    
+  });///////////////////////////////////////////////////////////////////////
+</script>
+</body>
+</html>

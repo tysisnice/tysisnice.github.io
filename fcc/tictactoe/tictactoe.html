@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+  <!--
+Author: Tyson Hauke
+Notes:
+-->
+<head>
+  <!--    links:    -->
+  <!--  Bootstrap stylesheet   -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!--  Google fonts:
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Nunito|Pacifico" rel="stylesheet">     -->
+  <!--    Imported libraries:   -->
+  <!--  JQuery:   -->
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <!--  JQuery.Transit:
+  <script src='http://ricostacruz.com/jquery.transit/jquery.transit.min.js'></script>  -->
+  <!--  Angular js:
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>   -->
+  <!--  Bootstrap:    -->
+  <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+  <!--  Font Awesome:
+  <script src="https://use.fontawesome.com/4c71c17874.js"></script>    -->
+  
+  <title>Tic Tac Toe</title>
+  <style>
+  body{
+    text-align:center;
+  }
+  .theBoard {
+    padding-top:5px;
+    padding-left:0px;
+    background-color:#678;
+    width:602px;
+    height:605px;
+    margin:auto;
+    margin-bottom:6px;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+  }
+  .row{
+    padding:0px;
+    width:600px;
+    height:200px;
+    margin:0px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .ticBtn{
+    overflow:hidden;
+    margin:0px;
+    padding:auto;
+    width:195px;
+    height:195px;
+    font-size:30px;
+    line-height:195px;
+    text-align:center;
+  }
+  .bottomBtn{
+    width:195px;
+    height:69px;
+    font-size:26px;
+    line-height:69px;
+    text-align:center;
+  }
+  input{
+    line-height:40px;
+    
+  }
+  .winnersPage{
+    display:none;
+    top:0px;
+    position:fixed;
+    height:100%;
+    width:100%;
+    padding:auto;
+    padding-top:10%;
+    background-color:white;
+    color:orange;
+    font-size:70px;
+    z-index:2;
+  }
+  input[type=text]{
+    padding-left:3px;
+  }
+  input[type=radio] {
+    border:3px;
+    border-radius:4px;
+    width: 25px;
+    height: 25px;
+  }
+  .playerRow{
+    background-color: ghostwhite;
+    border-style:solid;
+    border-width:5px;
+    border-radius:10px;
+    border-color:#b33; height:75px; width:602;
+    padding-top:3px;
+    padding-bottom:0px;
+    margin-top:6px;
+    line-height:60px;
+    font-size:24px;
+  }
+  </style>
+</head>
+<body>
+  <div class='winnersPage'>
+    <span id='winMessage'></span>
+    <br><br>
+    <button id='endBtn'>Sweet! Play on!</button>
+  </div>
+  <h1>Tic Tac Toe</h1>
+  
+  <div class='theBoard'>
+    <div class='row'>
+      <button class='ticBtn tic00' onclick='move(0,0)'>&zwnj;</button>
+      <button class='ticBtn tic10' onclick='move(1,0)'>&zwnj;</button>
+      <button class='ticBtn tic20' onclick='move(2,0)'>&zwnj;</button>
+    </div>
+    <div class='row'>
+      <button class='ticBtn tic01' onclick='move(0,1)'>&zwnj;</button>
+      <button class='ticBtn tic11' onclick='move(1,1)'>&zwnj;</button>
+      <button class='ticBtn tic21' onclick='move(2,1)'>&zwnj;</button>
+    </div>
+    <div class='row'>
+      <button class='ticBtn tic02' onclick='move(0,2)'>&zwnj;</button>
+      <button class='ticBtn tic12' onclick='move(1,2)'>&zwnj;</button>
+      <button class='ticBtn tic22' onclick='move(2,2)'>&zwnj;</button>
+    </div>
+  </div>
+  
+  
+  <div class='row' style='background-color: black; height:76px; width:602; padding-top:4px; padding-bottom:2px;margin-top:2px;'>
+    <button class='bottomBtn' onclick='startGame()'>New VS CPU</button>
+    <button class='bottomBtn' onclick='resetGame()'>Practice</button>
+    <button class='bottomBtn' onclick='window.open(window.location.href, "_blank","height=1100,width=666")'>Open New</button>
+  </div>
+  
+  
+  <div class='row playerRow' style='background-color: #dff; border-color:#35b'>
+    <input type='radio' name='player' id='p1' checked> Player 1 name:
+    <input type='text' id='p1Name' placeholder='X'>
+  </div>
+  <div class='row playerRow' style='background-color: #fdd'>
+    <input type='radio' name='player' id='p2'> Player 2 name:
+    <input type='text' id='p2Name' placeholder='O'>
+  </div>
+    
+  
+<script>
+  var inGame = false,
+    playerMove = true,
+    isP1 = true,
+    realMove = true,
+    cpuInCenter = false,
+    board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+    board2 = board,
+    cpu = 20,
+    hmn = 1,
+    num = 0,
+    moveCount = 0;
+  
+  
+  function startGame(){
+    resetGame();
+    isP1 = !isP1;
+    inGame = true;
+    $('input').prop('disabled', true);
+    if (!isP1) {
+      playerMove = false;
+      if ((Math.random()) > 0.5){
+        move(0,2,7);
+      }
+      else{
+        move(1,1,5);
+      }
+      playerMove = true
+    }
+    else{
+      isP1 = !isP1;
+    }
+  }
+  
+  
+  function move(row, col){
+    var kunk = board[row][col];
+    if (playerMove){
+      if (kunk > 0){
+        return true;
+      }
+    }
+    if (realMove) {
+      moveCount++;
+      isP1 = !isP1;
+      if (isP1){
+        var mover = $('#p1Name').val();
+        if (mover.length < 2){
+          mover = '<span style="color:blue; font-size:60px;">X</span>';
+        }
+        $('.tic'+row+col).html(mover);
+        num = 1;
+        board[row][col] = num;
+        if ((inGame && realMove) && checkWin(num, board)){
+          var winner = mover.length > 30 ? 'X' : mover;
+          endGame(winner);
+          return false;
+        }
+      }
+      else{
+        var mover = $('#p2Name').val();
+        if (mover.length < 2){
+          mover = '<span style="color:red; font-size:60px;">O</span>'
+        }
+        $('.tic'+row+col).html(mover);
+        num = 20;
+        board[row][col] = num;
+        if (inGame && checkWin(num, board)){
+          var winner = mover.length > 30 ? 'O' : mover;
+          endGame(winner);
+          return false;
+        }
+      }
+      if (checkIfTie()){
+        endGame('its a tie');
+        return false;
+      }
+      if (inGame && playerMove) {
+        playerMove = false;
+        CPUmove(board);
+        playerMove = true;
+        realMove = true;
+      }
+      return false;
+    }
+  }
+    
+    
+  function CPUmove(bord){
+    if (isP1) {cpu = 1; hmn = 20;}else{cpu = 20; hmn = 1;}
+    if (board[1][1] === 0 && realMove){move(1,1); cpuInCenter = true; realMove=false;}
+    
+    if (realMove){
+      var x = smartAI(cpu, bord);
+      console.log(x);
+      if (x.move){
+        move(x.row, x.col);
+        realMove = false;
+      }
+    }
+    if (realMove){
+      var x = smartAI(hmn, bord);
+      console.log(x);
+      if (x.move){
+        move(x.row, x.col);
+        realMove = false;
+      }
+    }
+    if ((board[0][2] !== 0 || board[0][0] !== 0) && ((board[2][0] !== 0|| board[2][2] !== 0) && (board[1][1] !== 0 && cpuInCenter))){
+    if (board[1][0] === 0  && realMove){move(1,0); realMove=false;}
+    }
+    if (board[0][2] === 0  && realMove){move(0,2); realMove=false;}
+    if (board[0][0] === 0  && realMove){move(0,0); realMove=false;}
+    if (board[2][2] === 0  && realMove){move(2,2); realMove=false;}
+    if (board[2][1] === 0  && realMove){move(2,1); realMove=false;}
+    if (board[1][2] === 0  && realMove){move(1,2); realMove=false;}
+    if (board[1][0] === 0  && realMove){move(1,0); realMove=false;}
+    if (board[0][1] === 0  && realMove){move(0,1); realMove=false;}
+    if (board[2][0] === 0  && realMove){move(2,0); realMove=false;}
+  }
+  
+    
+    
+  function smartAI(nu, brd){
+    var b = board;
+    var w = nu * 2;
+    var makeMove = false;
+    var AIro = 0;
+    var AIco = 0;
+    console.log(b);
+    for (i = 0; i < 3; i++){
+      
+      if (b[i][0] + b[i][1] + b[i][2] === w){
+        if (b[i][0] === 0){makeMove = true; AIco = 0;}
+        if (b[i][1] === 0){makeMove = true; AIco = 1;}
+        if (b[i][2] === 0){makeMove = true; AIco = 2;}
+        AIro = i;
+      }
+      if (b[0][i] + b[1][i] + b[2][i] === w){
+        if (b[0][i] === 0){makeMove = true; AIro = 0;}
+        if (b[1][i] === 0){makeMove = true; AIro = 1;}
+        if (b[2][i] === 0){makeMove = true; AIro = 2;}
+        AIco = i;
+      }
+    }
+    if (b[0][0] + b[1][1] + b[2][2] === w){
+      if (b[0][0] === 0){makeMove = true; AIco = 0; AIro = 0;}
+      if (b[1][1] === 0){makeMove = true; AIco = 1; AIro = 1;}
+      if (b[2][2] === 0){makeMove = true; AIco = 2; AIro = 2;}
+    }
+    if (b[2][0] + b[1][1] + b[0][2] === w){
+      if (b[2][0] === 0){makeMove = true; AIro = 2; AIco = 0;}
+      if (b[1][1] === 0){makeMove = true; AIro = 1; AIco = 1;}
+      if (b[0][2] === 0){makeMove = true; AIro = 0; AIco = 2;}u
+    }
+    return {'move' : makeMove, 'row' : AIro, 'col' : AIco } ;
+  }
+    
+    
+  function checkIfTie(){
+    for (i = 0; i < 3; i++) {
+      for (j = 0; j < 3; j++){
+        if (board[i][j] === 0){
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+   
+    
+  function checkWin(num, board0){
+    for ( i = 0 ; i < 3 ; i++) {
+      if ( (board0[i][0] === board0[i][1] && board0[i][1] === board0[i][2]) && board0[i][2] === num )  {
+        return true;
+      }
+      if ( (board0[0][i] === board0[1][i] && board0[1][i] === board0[2][i]) && board0[2][i] === num )  {
+        return true;
+      }
+    }
+    if ( (board0[0][0] === board0[1][1] && board0[1][1] === board0[2][2]) && board0[2][2] === num ) {
+      return true;
+    }
+    if ( (board0[0][2] === board0[1][1] && board0[1][1] === board0[2][0]) && board0[2][0] === num){
+      return true;
+    }
+    return false;
+  }
+  
+  
+  function undoMove(row, col, square){
+    board[row][col] = 'sq' + square;
+    $('.tic'+square).html('&zwnj;');
+    isP1 = !isP1;
+  }
+  
+  function endGame(name){
+    if (inGame){
+      setTimeout(function(){
+        if (name === 'its a tie'){
+          $('.winnersPage').show();
+          $('#winMessage').text('Its a tie...');
+        }
+        else{
+          $('.winnersPage').show();
+          $('#winMessage').text('Congratulations ' + name + '! You Won!');
+        }
+      }, 500);
+    }
+  }
+  
+  function resetGame(){
+    moveCount = 0;
+    inGame = false;
+    realMove = true;
+    playerMove = true;
+    cpuInCenter = false;
+    board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    $('.ticBtn').html('&zwnj;');
+    $('input').attr('disabled', false);
+    if (document.getElementById('p1').checked){
+      isP1 = true;
+    }else{
+      isP1 = false;
+    }
+    isP1 = !isP1;
+  }
+  
+  
+  
+  $(document).ready(function(){
+    
+    $('#endBtn').click(function(){
+      $('.winnersPage').hide();
+      resetGame();
+    });
+    
+  });
+  
+  
+  
+</script>
+</body>
+</html>

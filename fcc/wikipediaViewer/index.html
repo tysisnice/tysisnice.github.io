@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<!--
+Author: Tyson Hauke
+Notes:
+-->
+<head>
+  <!--  links:  -->
+  <!--  Bootstrap stylesheet    -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!--  Google fonts:
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Nunito|Pacifico" rel="stylesheet">     -->
+  <!--  Imported scripts: -->
+  <!--  JQuery:-->
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <!--  JQuery.Transit:-->
+  <script src='http://ricostacruz.com/jquery.transit/jquery.transit.js'></script>
+  <!--  Angular js:
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>   -->
+  <!--  Bootstrap:-->
+  <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+  <!--  Font Awesome:
+  <script src="https://use.fontawesome.com/4c71c17874.js"></script>  -->
+  <title>Wiki Viewer</title>
+  <style>
+    body {
+      margin-top:-10px;
+      text-align:center;
+      background-color:#f5f5fc;
+      padding:auto;
+      padding-right:-200px;
+    }
+    a{text-decoration:none !important;
+      background-color:white;
+      z-index:3;
+    }
+    .mainContainer {
+      background-color:#252525;
+      height:1px;
+      width:100%;
+      position:fixed;
+      z-index:10;
+    }
+    .wikiViewer {
+      position:absolute;
+      color:ghostwhite;
+      font-size:60px;
+      line-height:90px;
+      margin-top:-0px;
+      margin-left:2%;
+    }
+    .searchBox {
+      position:fixed;
+      text-align:center;
+      width:600px;
+      height:90px;
+      top:-30%;
+      right:50%;
+      margin-right:-300px;
+    }
+    input {
+      padding-left:5px;
+      padding-right:5px;
+      height: 70px;
+      font-size:34px;
+      width:3px;
+      border-style:solid;
+      border-width:9px;
+      border-color:#ff3838;
+      border-radius:12px;
+      background-color:#252525;
+      opacity:0;
+    }input:hover{
+      border-color:red;
+    }input, select, textarea{
+    color: #ffcccc;
+    }
+    .searchBar{
+      padding:0px;
+    }
+    .searchIcon {
+      background: rgba(30, 30, 30, 0);
+      cursor: pointer;
+      margin-left:12px;
+      height:80px;
+      padding:-10px;
+      font-size:64px;
+      color:#ff3838;
+      opacity:1;
+    }.searchIcon:hover {
+      background: rgba(30, 30, 30, 0);
+      color:red;
+    }.searchIcon:active{
+      background: rgba(30, 30, 30, 0);
+    }
+    .randomButton{
+      color:#ff9999;
+      font-size:24px;
+      margin:15px;
+      padding:8px;
+      opacity:0;
+    }.randomButton:hover {
+      color:red;
+    }
+    .resultsContainer{
+      z-index:2;
+      width:100%;
+      height:auto;
+      padding:4px;
+      padding-top:115px;
+      margin:0;
+    }
+    .contentCard{
+      opacity:0.9;
+      margin: auto;
+      margin-bottom:39px;
+      background-color:#fcfcff;
+      color:#171717;
+      padding:27px;
+      padding-top:19px;
+      border-style:solid;
+	    border-radius:3px;
+	    border-color:#fcfcff;
+    }.contentCard:hover{
+      opacity:1;
+      border-color:white;
+      background-color:white;
+      -moz-box-shadow: 0px 0px 6px 2px #fff;
+	    -webkit-box-shadow: 0px 0px 6px 2px #fff;
+	    box-shadow: 0px 0px 4px 6px #fff;
+    }.contentCard:active{
+      position:relative;
+      top:1px;
+      -moz-box-shadow: 0px 0px 0px 2px #fff;
+	    -webkit-box-shadow: 0px 0px 0px 2px #fff;
+	    box-shadow: 0px 0px 0px 2px #fff;
+	    opacity:0.65;
+    }
+    .col-md-5{
+      z-index:3;
+      text-align:center;
+      height:auto;
+      padding:19px;
+      padding-bottom:-4px;
+    }
+    .theOverlay{
+      background-color:#222;
+      opacity:0;
+      z-index:5;
+      position:fixed;
+      width:100%;
+      height:10px;
+      margin-left:-20px;
+    }
+    .pageContainer{
+      position:fixed;
+      text-align:center;
+      padding:auto;
+      padding-top:4%;
+      width:100%;
+      height:100%;
+      z-index:30;
+      background: rgba(30, 30, 30, 0.4);
+    }
+    .pageBox{
+      width:91%;
+      height:91%;
+      margin:auto;
+      border-radius:3px;
+      background-color:ghostwhite;
+    }
+    iframe{
+      width:100%;
+      height:100%;
+      border-style:solid;
+      border-color:ghostwhite;
+      border-width:4px;
+      border-radius:3px;
+    }
+    .fillz{
+      height:20px;
+      width:100%;
+      margin:0;
+      background-color:#252525;
+      z-index:9;
+      position:fixed;
+      top:-1px;
+      
+    }
+    .fillerSpan{width:5px;opacity:0;}
+    .randomFillerBlock{height:2px;width:2px;opacity:0;}
+  </style>
+</head>
+<body>
+  
+  
+  <div class='theOverlay'></div>
+  
+  <div class='pageContainer'>
+    <div class='pageBox'>
+      <iframe target='thePage' width='100%' height='100%' src="" name="thePage" seamless></iframe>
+    </div>
+  </div>
+  
+  
+  <div class="mainContainer container">
+    <h1 class="wikiViewer"><b>WikiViewer</b></h1>
+    
+    <div class="searchBox row container">
+      <form class="searchBar">
+        <input id="searchQuery" type="text submit" autocomplete="off" placeholder="Search..." />
+        <span class="searchIcon glyphicon glyphicon-search"></span>
+        </form>
+      <a href='https://en.wikipedia.org/wiki/Special:Random' target="thePage"><div class='randomButton'>Random</div></a>
+      <span class='fillerSpan'></span>
+    </div>
+  
+    
+  </div>
+  <div class='resultsContainer row'>
+    <div class='col-md-1'></div>
+    <div class='leftSide col-md-5'>
+    </div>
+    <div class="rightSide col-md-5">
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+    
+    
+    
+<script>
+  //initial variables etc https://en.wikipedia.org/w/api.php?action=opensearch&search=
+  var apiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&limit=16&search=';
+  var currentlySearching = true;
+  var searchMade = false;
+  var notFirstClick = false;
+  var addToLeft = true;
+  var overlayClick = true;
+  var cardNum = 0;
+  var theSearch = '';
+  var oldSearch = '';
+  
+  function addCards(data){
+    addToLeft = true;
+    $('.rightSide').empty();
+    $('.leftSide').empty();
+    for (i=0; i < data[1].length; i++) {
+      var container = (addToLeft) ? '.leftSide' : '.rightSide';
+      var html = "<a id='open' href='" +data[3][i]+ "' target='thePage'><div class='contentCard'><h2><b>"+data[1][i]+"</b></h2><hr><h3>"+data[2][i]+"</h3></div></a>";
+      $(container).append(html);
+      addToLeft = (!addToLeft);
+    }
+    $('.resultsContainer').transition({y:400, opacity:0.1},1).transition({y:1, opacity:1},400,'snap');
+  };
+  
+  
+  function foldUpForm(){
+    $(".randomButton").transition({opacity:0,margin:'0px',padding:'0px',scale:0}, 500, 'ease');
+    $("input").transition({width:'2px',opacity:0},500, 'ease');
+      
+      // Drop down and spring up to show results
+    if (searchMade && notFirstClick) {
+      $(".mainContainer").transition({height:'100%',delay:550},300,'snap').transition({height:'91px',delay:150},500,'snap');
+      $(".searchBox").transition({x:10,},550,'ease').transition({top:'45%'},300,'snap').transition({top:'1px',right:'0%',x:-90,y:-1, delay:50});
+        searchMade = false;
+      $('.resultsContainer').transition({y:0,delay:500});
+    }else{// Simply retract to the top
+        
+      $('.resultsContainer').transition({y:0,delay:530});
+      $(".searchBox").transition({x:10},500,'ease').transition({top:'1px',right:'0%',x:-90, y:-1});
+      $(".mainContainer").transition({height:'91px', delay:520});
+    }
+    $('.theOverlay').transition({opacity:0, delay:560}).transition({height: '1px', delay:8},1);
+  };
+    
+    
+    
+  /////main click function
+  $(".searchIcon").click(function(){
+    if (currentlySearching){
+      theSearch = escape($('#searchQuery').val());
+     
+      //make the search
+      if ((theSearch && overlayClick) && (theSearch !== oldSearch)) {
+        oldSearch = theSearch;
+        $('.resultsContainer').transition({y:300, opacity:0, delay:540},300);
+        // Get data
+        $.ajax({
+          url: apiUrl + theSearch,
+            jsonp: "callback",
+            dataType: "jsonp",
+            success: function(data) {
+              setTimeout(addCards(data), 150);
+            }
+          });
+        searchMade = true;
+        }
+        
+      foldUpForm();
+    }
+    //end of search code
+    
+    //this drops down the search form
+    else{
+      $('.resultsContainer').transition({y:170, delay:10});
+      $(".mainContainer").transition({height:'400px'});
+      $('.searchBox').transition({x:0, y:0, top:'150px',right:'50%'});
+      $('input').transition({opacity:1, width:'400px', delay:300});
+      $('.randomButton').transition({opacity:1,delay:600, margin:'15px',padding:'8px',scale:1});
+      $('.theOverlay').css('height','100%').transition({opacity:0.37},450);
+      $("input").focus();
+    }
+    // reset search booleans so it doesnt get stuck in a loop
+    notFirstClick = true;
+    currentlySearching = (!currentlySearching);
+  });
+  /////end of main click function
+  
+  
+  
+  // these trigger the search function
+  $("form").on('submit', function(e){
+    e.preventDefault();
+    $('.searchIcon').trigger('click');
+  });
+  // this retreats the search box if the user clicks elsewhere
+  var pageOpen = false;
+  $('.theOverlay').click(function(){
+      if (currentlySearching && notFirstClick){
+        overlayClick = false;
+        $('.searchIcon').trigger('click');
+        overlayClick = true;
+      }
+  });
+  
+  
+  // opens the selected page
+  $('.col-md-5').click(function(){
+    var frameValue = $(this).contents().find("iframe").prop('href');
+    $('#openNewTab').attr('href', frameValue);
+    $('.pageContainer').fadeIn(400);
+  });
+  $('a').click(function(){
+    $('.pageContainer').fadeIn(400);
+    var frameValue = $(this).contents().find("iframe").prop('href');
+    $('#openNewTab').attr('href', frameValue);
+  });
+  
+  $('.pageContainer').click(function(){
+    $('.pageContainer').fadeOut(400);
+  });
+  
+  
+  
+  // doc ready. entry animations
+  $(document).ready(function(){
+    $('.pageContainer').hide();
+    $("body").hide().fadeIn(200);
+    $(".mainContainer").transition({height:'100%', delay:200},700, 'ease');
+    $(".searchBox").transition({top:'45%',delay:1100}, 500, 'snap');
+    $(".searchIcon").transition({y:14, delay:1100}, 500, 'ease');
+    $("input").transition({opacity:0.1, delay:1600},70, 'ease').transition({width:'400px',opacity:1}, 400);
+    $(".randomButton").transition({opacity:1, delay:1600, x:-35});
+    $('.resultsContainer').transition({y:800, opacity:0},2);
+    $("input").focus();
+  });
+</script>
+</body>
+</html>

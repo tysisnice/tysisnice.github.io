@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <!--
+Author: Tyson Hauke
+Notes:
+-->
+<head>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+  <title>Calculator</title>
+<link rel='stylesheet' href='./calculator.css'>
+</head>
+<body onBlur="this.focus();">
+
+  <div class='calculator container'>
+    <div class='textWindow'>
+      0
+    </div>
+    <div class='answerWindow'>
+      ans
+    </div>
+    <div class='row'>
+      <div class='col-xs-3'>
+        <div class='calcButton' onclick='calcOp(7)'>
+          7
+        </div>
+        <div class='calcButton' onclick='calcOp(4)'>
+          4
+        </div>
+        <div class='calcButton' onclick='calcOp(1)'>
+          1
+        </div>
+        <div class='calcButton' onclick='calcOp(".")'>
+          .
+        </div>
+      </div>
+
+      <div class='col-xs-3'>
+        <div class='calcButton' onclick='calcOp(8)'>
+          8
+        </div>
+        <div class='calcButton' onclick='calcOp(5)'>
+          5
+        </div>
+        <div class='calcButton' onclick='calcOp(2)'>
+          2
+        </div>
+        <div class='calcButton' onclick='calcOp(0)'>
+          0
+        </div>
+      </div>
+
+      <div class='col-xs-3'>
+        <div class='calcButton' onclick='calcOp(9)'>
+          9
+        </div>
+        <div class='calcButton' onclick='calcOp(6)'>
+          6
+        </div>
+        <div class='calcButton' onclick='calcOp(3)'>
+          3
+        </div>
+        <div class='calcButton' onclick='equals()'>
+          =
+        </div>
+      </div>
+
+      <div class='col-xs-3'>
+        <div class='calcButton2'  onclick='calcOp(" / ")'>
+          &divide;
+        </div>
+        <div class='calcButton2' onclick='calcOp(" * ")'>
+          x
+        </div>
+        <div class='calcButton2' onclick='calcOp(" - ")'>
+          -
+        </div>
+        <div class='calcButton2' onclick='calcOp(" + ")'>
+          +
+        </div>
+      </div>
+    </div>
+
+
+    <div class='bottomRow row'>
+      <div class='col-xs-6 calcButton2' onclick='newWindow()'>Open New</div>
+      <div class='calcButton2 col-xs-3' onclick='clearAll()'>C</div>
+      <div class='calcButton2 col-xs-3' onclick='deleter()'>DEL</div>
+    </div>
+
+  </div>
+
+<script src='./calculator.js'>
+
+</script>
+</body>
+</html>

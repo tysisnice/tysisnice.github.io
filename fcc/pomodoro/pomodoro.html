@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <!--
+Author: Tyson Hauke
+Notes:
+-->
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+  
+  <title>Pomodoro</title>
+  <style>
+  body{
+    font-family: 'Nunito', sans-serif;
+    padding:10%;
+    font-size:160%;
+    text-align:center;
+  }
+  button{
+    color:white;
+    padding:0px;
+    padding-left:30px;
+    padding-right:30px;
+    font-size:100%;
+    font-family: 'Nunito', sans-serif;
+    background-color:#444;
+    border-color:#444;
+    border-radius:5px;
+    
+  }
+  </style>
+</head>
+<body>
+    <div id='theClock'>
+    <h3>A Productivity Timer<br></h3>
+    <h1>Work Time: <span id='workTime'>25.00</span>
+    <button onclick='decWork()'> - </button>
+    <button onclick='incWork()'> + </button></h1>
+    <h2>Break Time: <span id='breakTime'>5.00</span>
+    <button onclick='decBreak()'> - </button>
+    <button onclick='incBreak()'> + </button></h2>
+    
+    <button id='playButton' onclick='startTimer()'>start</button>
+    <button onclick='resetTimer()'>reset</button>
+  </div>
+<script>
+  var working = true,
+    timerRunning = false,
+    timing,
+    curTime = 0,
+    wSetTime = 25,
+    bSetTime = 5,
+    wEndTime = 0,
+    bEndTime = 0,
+    wTime = 60000 * wSetTime,
+    bTime = 60000 * bSetTime;
+  
+  
+  function decWork(){
+    wTime -= 60000;
+    wEndTime -= 60000;
+    wSetTime = wSetTime - 1;
+    printTime();
+  };
+  
+  function incWork(){
+    wTime += 60000;
+    wEndTime += 60000;
+    wSetTime++;
+    printTime();
+  };
+  
+  function decBreak(){
+    bTime -= 60000;
+    bEndTime -= 60000;
+    bSetTime = bSetTime - 1;
+    printTime();
+  };
+  
+  function incBreak(){
+    bTime += 60000;
+    bEndTime += 60000;
+    bSetTime++;
+    printTime();
+  };
+  
+  
+  function setTime(){
+    if (working){
+      if (0 >= wEndTime - Date.parse(new Date())){
+        wTime = 0;
+        printTime();
+        timeUp();
+      }else{
+        wTime = wEndTime - Date.parse(new Date());
+        printTime();
+      }
+    }else{
+      if (0 >= bEndTime - Date.parse(new Date())){
+        bTime = 0;
+        printTime();
+        timeUp();
+      }else{
+        bTime = bEndTime - Date.parse(new Date());
+        printTime();
+      }
+    }
+  };
+  
+  function startTimer(){
+    if (timerRunning){
+      clearInterval(timing);
+      document.getElementById('playButton').innerHTML = 'start';
+      timerRunning = false;
+    }else{
+      curTime = Date.parse(new Date());
+      if (working) {
+        wEndTime = curTime + wTime;
+      }
+      else{
+        bEndTime = curTime + bTime;
+      }
+      timing = setInterval(setTime, 100);
+      document.getElementById('playButton').innerHTML = 'pause';
+      timerRunning = true;
+    }
+  };
+  
+  
+  function resetTimer(){
+    curTime = 0;
+    wEndTime = 0;
+    bEndTime = 0;
+    wTime = 60000 * wSetTime;
+    bTime = 60000 * bSetTime;
+    printTime();
+  };
+  
+  function printTime(){
+    var wM = (wTime/1000/60) << 0,
+      wS = (wTime/1000) % 60,
+      bM = (bTime/1000/60) << 0,
+      bS = (bTime/1000) % 60;
+    var wMinutes = wM === 0  ? '0' + wM : wM,
+      wSeconds = wS === 0  ? '0' + wS : wS,
+      bMinutes = bM === 0  ? '0' + bM : bM,
+      bSeconds = bS === 0  ? '0' + bS : bS;
+    
+    document.getElementById('workTime').innerHTML = wMinutes + '.' + wSeconds;
+    document.getElementById('breakTime').innerHTML = bMinutes + '.' + bSeconds;
+  };
+  
+  
+  function timeUp(){
+    var audio = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3');
+    audio.play();
+    clearInterval(timing);
+    working = !working;
+    resetTimer();
+    timerRunning = false;
+    startTimer();
+  };
+  
+  
+</script>
+</body>
+</html>

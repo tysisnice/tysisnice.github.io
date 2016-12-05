@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    Inspirational Quotes
+  </title>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Nunito|Pacifico" rel="stylesheet">
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://use.fontawesome.com/4c71c17874.js"></script>
+  
+<script>
+$(document).ready(function(){
+  $(window).load(function() {
+    
+    $("#backDrop").css("background-image", "url("+nextImg+")");
+    $("#backDrop").hide().fadeIn(3500);
+    $("#theQuote").text(nextQuote);
+    $("#theQuoter").text(nextQuoter);
+    $("#tweetIt").attr("href", 'https://twitter.com/intent/tweet?text=' + nextQuote + " " + nextQuoter);
+  });
+});
+</script>
+
+<style>
+  body {
+    font-family: 'Pacifico', cursive;
+    height: 1700px;
+    min-height: 100%;
+  }
+  img.bg {
+  /* Set rules to fill background */
+  min-height: 120%;
+  min-width: 1024px;
+  }
+  #theQuote {
+    color: #353535;
+    margin-left: 5px;
+    margin-right: 5px;
+    line-height: 1.55;
+    font-family: , cursive;
+    font-size: 42px;
+  }
+  #theQuoter {
+    color: #333;
+    font-size: 26px;
+    line-height: 1.55;
+    font-family: , cursive;
+  }
+  #backDrop{
+    text-align: center;
+    background-color: white;
+    margin: -10px -10px -10px -10px;
+    width: ;
+    margin-right:0px;
+    height: 1700px;
+    min-height: 100%;
+  }
+  #main {
+    width: 100%;
+    padding-left: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: auto;
+    text-align: center;
+    height: 100%;
+    height: 100vh;
+    display: flex;
+    position: fixed;
+  }
+  #quoteBox{
+    max-width: 90%;
+    color: #444;
+    padding: 40px 45px 40px 45px;
+    background: rgba(240, 240, 240, 0.62);
+    border-radius: 16px;
+    width: 450 px;
+    margin-right: auto;
+    margin-left:auto;
+    margin-bottom: auto;
+    margin-top: auto;
+    position: relative;
+    border: thick;
+    border-width: 10px;
+    border-color: rgba(240, 240, 240, 0.62);
+    box-shadow: 0px 0px 10px #666;
+    z-index:10;
+  }
+  #tweet{
+    margin-bottom:1px;
+    margin-top:8px;
+    margin-left: 5px;
+    margin-right:5px;
+    font-size: 18px;
+    z-index: 11;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.35);
+  }
+  .newQuote{
+    padding:11px 11px 11px 11px;
+    margin-left: 5px;
+    margin-right:5px;
+    margin-top: 10px;
+    border-radius: 7px;
+    border-width: 7px;
+    border: thick;
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.35);
+    margin-bottom: 1px;
+    font-size: 18px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .newQuote:hover {
+    background: rgba(255, 255, 255, 0.99);
+    -moz-box-shadow: 0px 0px 10px 2px #ffffff;
+	  -webkit-box-shadow: 0px 0px 10px 2px #ffffff;
+	  box-shadow: 0px 0px 10px 2px #ffffff;
+  }
+  .newQuote:active {
+    -moz-box-shadow: 0px 0px 10px 2px #ffffff;
+	  -webkit-box-shadow: 0px 0px 10px 2px #ffffff;
+	  box-shadow: 0px 0px 10px 2px #ffffff;
+	  position:relative;
+	  top:2px;
+  }
+  #filler{
+    width: auto;
+    height:1624px;
+    min-height: 90%;
+  }
+  .bottomBar {
+    width:auto;
+    margin-top: auto;
+    margin-left:-5px;
+    margin-right:-15px;
+    margin-bottom:0px;
+    padding:0;
+    background: rgba(255, 255, 255, 0.7);
+    height: 76px;
+    bottom:0;
+  }
+  .bottomButton{
+    background: rgba(255, 255, 255, 0.01);
+	  margin:0;
+	  border-color:white;
+	  border-radius: 1px;
+	  border:thick;
+	  padding:auto;
+	  height:76px;
+    line-height: 76px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 26px;
+    color: #393939;
+  }
+  .bottomButton:hover {
+    background: rgba(255, 255, 255, 0.99);
+    -moz-box-shadow: 0px 0px 10px 2px #ffffff;
+	  -webkit-box-shadow: 0px 0px 10px 2px #ffffff;
+	  box-shadow: 0px 0px 10px 2px #ffffff;
+  }
+  .bottomButton:active {
+    -moz-box-shadow: 0px 0px 10px 2px #ffffff;
+	  -webkit-box-shadow: 0px 0px 10px 2px #ffffff;
+	  box-shadow: 0px 0px 10px 2px #ffffff;
+	  position:relative;
+	  top:2px;
+  }a {
+    text-decoration: none !important;
+}
+#myPopup{
+  background: rgba(255, 255, 255, 0.85);
+}
+</style>
+</head>
+  
+<body>
+<div align="center" id="backDrop" class="container-fluid">
+<div class="row">
+  <div class="col-xs-1 col-sm-1 col-lg-1 col-md-1"></div>
+  <div align="center" class="col-xs-offset-1 col-sm-offset-1 col-lg-offset-1 col-md-offset-1 col-sm-10 col-md-10 col-lg-10 col-xs-10" id="main">
+    <div class="jumbotron responsive" id="quoteBox">
+      
+      <div align="center" style="font-color: black;" id="theBoxOfText">
+        <h2 id="theQuote">hello</h2>
+        <h3 id="theQuoter">hello</h3>
+      </div>
+      
+      <div class = "row">
+        
+        <button type = "button" class="button btn newQuote">
+          <i class="fa fa-heart-o" aria-hidden="true"></i>&emsp;New quote</button>
+        
+        </div>
+      </div>
+  </div>
+</div>
+<div id="filler"></div>
+<footer id="" class = "row bottomBar">
+  <a href="" id="tweetIt" class="bottomButton col-xs-4" target="_blank">
+    <i class="fa fa-twitter" aria-hidden="true"></i>&ensp;Tweet
+  </a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A//tysisnice.droppages.com/randomQuoteMachine" id="shareIt" class="bottomButton col-xs-4" target="_blank">
+    <i class="fa fa-facebook" aria-hidden="true"></i>&ensp;Share
+  </a>
+  <a href="#" onclick="sendQuote()" id="quoteIt" class="bottomButton col-xs-4">
+    <i class="fa fa-plus" aria-hidden="true"></i>&ensp;Gplus
+  </a>
+<!-- -->
+</footer>
+</div>
+<script>
+// setting up the lists and variables for holding background images
+  var backgroundImages = [
+  "http://i.imgur.com/zJ7dn22.jpg",
+  "http://i.imgur.com/Ws8NKLc.jpg",
+  "http://i.imgur.com/AqRDyQX.jpg",
+  "http://i.imgur.com/0hwkgL7.jpg",
+  "http://i.imgur.com/JnpoX8m.jpg",
+  "http://i.imgur.com/bZ7umHw.jpg",
+  "http://i.imgur.com/qW6rR3A.jpg",
+  "http://i.imgur.com/nGE087y.jpg",
+  "http://i.imgur.com/UDLbaTg.jpg",
+  "http://i.imgur.com/QwNQFZI.jpg",
+  "http://i.imgur.com/p870Ff0.jpg",
+  "http://i.imgur.com/MiN1y2w.jpg",
+  "http://i.imgur.com/n1embe6.jpg",
+  "http://i.imgur.com/64a7mHl.jpg",
+  "http://i.imgur.com/0AvrMpc.jpg",
+  "http://i.imgur.com/H2RR6PT.jpg",
+  "http://i.imgur.com/2jLMdWN.jpg",
+  "http://i.imgur.com/nnPv4gx.jpg",
+  "http://i.imgur.com/Zj84QX8.jpg",
+  "http://i.imgur.com/FxJ3HRV.jpg",
+  "http://i.imgur.com/IoY6E4h.jpg",
+  "http://i.imgur.com/4MEa0Rx.jpg",
+  "http://i.imgur.com/QYUBxAA.jpg",
+  "http://i.imgur.com/HUhjof5.jpg",
+  "http://i.imgur.com/OcX6v9y.jpg"
+  ];
+  
+  var currentImages = backgroundImages;
+  var imageNum = Math.floor(Math.random() * (backgroundImages.length));
+  
+  
+  //setting up lists and variables for quote objects
+  var listOfQuotes = [
+    "'Fart is love, fart is life'",
+    "'Don't run with scizzors'",
+    "'North doesn't like pink or purple. She likes greys, creams, oatmeal colours and black'",
+    "'Sometimes you just have to let go'",
+    "'Breathe as loudly as possible'",
+    "'Rofl'",
+    "'Pools are great for holding water, man'",
+    "'You tried your best and you failed miserably, the lesson is: never try'",
+    "'Oh, so they have internet on computers now'",
+    "'Gyme? Whats a gyme? Ohhh, a gyme'",
+    "'That'll do donkey, that'll do'",
+    "'I choose to believe what I was programmed to believe'",
+    "'If we hit that bullseye, the rest of the dominoes will fall like a house of cards. Checkmate'",
+    "'Anything less than immortality is a complete waste of time'",
+    "'When you do things right, people wont be sure you've done anything at all'",
+    "'These lumps, I know you want to slump on these lumps, but you can't touch them cause you're a chump'",
+    "'Suckin at somethin is the first step toward being sorta good at somethin'",
+    "'I mean, part of the beauty of me is that I'm very rich'",
+    "'Nothing's impossible, even the word says: I'm possible'",
+    "'When everything is coming your way, you're in the wrong lane'",
+    "'When life gives you lemons, switch the lemons for limes, and make mojitos'",
+    "'When in a pickle, give your belly tickle'"
+    ]
+   
+   
+   //setting up lists and variables for quoter objects
+  var listOfQuoters = [
+    "- Frank the Dog",
+    "- Mum",
+    "- Kim Kardashian",
+    "- Frank the Dog, talking about farts",
+    "- Frank the Dog",
+    "- nub",
+    "- Rick from Hotrod",
+    "- Homer Simpson",
+    "- Homer Simpson",
+    "- Homer Simpson",
+    "- Shrek",
+    "- Angry robot from Futurama",
+    "- Zapp Brannigan",
+    "- Bender",
+    "- the Universe",
+    "- Lumpy Space Princess",
+    "- Jake the Dog",
+    "- Donald J Trump",
+    "- Joel",
+    "- Someguy from the internet",
+    "- Micah",
+    "- Tys"
+    ];
+    var currentImages = [];
+    var currentQuotes = [];
+    var currentQuoters = [];
+    
+    
+    // initial shuffle
+    for (i = 0, x = backgroundImages.length; i < x; i++) {
+      currentImages.push(backgroundImages.splice(Math.floor(Math.random() * backgroundImages.length), 1));
+    }
+    for (i = 0, x = listOfQuotes.length; i < x; i++) {
+      var num = (Math.floor(Math.random() * x));
+      currentQuotes.push(listOfQuotes.splice(num, 1));
+      currentQuoters.push(listOfQuoters.splice(num, 1));
+    }
+    
+    var nextImg = currentImages.shift();
+    var nextQuote = currentQuotes.shift();
+    var nextQuoter = currentQuoters.shift();
+    currentImages.push(nextImg);
+    currentQuotes.push(nextQuote);
+    currentQuoters.push(nextQuoter);
+    
+    
+    function getImage(){
+      var nextImg = currentImages.shift();
+      var thisImg = nextImg;
+      currentImages.push(thisImg);
+      return nextImg;
+    }
+    
+    function sendQuote(){
+      window.open('https://plus.google.com/share?url='+window.location.href,'_blank');
+    }
+</script>
+<script>
+  $(".newQuote").on("click", function() {
+    $("#backDrop").fadeOut(400);
+    setTimeout(function(){
+      $("#backDrop").css("background-image", "url("+getImage()+")");
+      $("#theQuote").text((function(){
+        var nextQuote = currentQuotes.shift();
+        var thisQuote = nextQuote;
+        currentQuotes.push(nextQuote);
+        return thisQuote;
+      }));
+      $("#theQuoter").text((function(){
+        var nextQuoter = currentQuoters.shift();
+        var thisQuoter = nextQuoter;
+        currentQuoters.push(nextQuoter);
+        return thisQuoter;
+      }));
+      }, 390);
+    setTimeout(function(){
+      $("#backDrop").fadeIn(1500);
+      $("#tweetIt").attr("href", 'https://twitter.com/intent/tweet?text=' + nextQuote + " " + nextQuoter);
+      }, 600);
+  });
+</script>
+</body>
+</html>

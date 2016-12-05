@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <!--
+Author: Tyson Hauke
+Notes:
+-->
+<head>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+  <title>twitch api</title>
+  <style>
+  body{
+    padding:5%;
+    text-align:center;
+  }
+  .offline{color:red;}
+  .online{color:green;}
+  </style>
+</head>
+<body>
+  <h1>twitch streamers<hr></h1>
+  
+  <div id='theResults'></div>
+  
+  <div><iframe name='theFrame' src="" height="720" width="1280" frameborder="0" scrolling="no" allowfullscreen="true"></iframe></div>
+  
+<script>
+  
+  var theList = ["ESL_SC2", "OgamingSC2", "cretetion", "brunofin", "storbeck", "habathcx", "RobotCaleb",'noobs2ninjas', "freecodecamp"];
+  var x = 0;
+  var p = 0;
+  $('document').ready(function(){
+    
+    for(u=0;u<theList.length;u++){
+      
+      var streamer = theList[x];
+      var theUrl = 'https://api.twitch.tv/kraken/streams/'+theList[p];
+      p++;
+      $.ajax({
+        url: theUrl,
+        jsonp: "callback",
+        dataType: "jsonp",
+        success: function(data) {
+          
+          if (data.error) {
+            $('#theResults').append('<div class="streamer"><p>' + theList[x]+' is not a channel</p><hr></div>');
+          }
+          else if (data.stream == null){
+            $('#theResults').append('<div class="streamer"><a href="https://www.twitch.tv/'+theList[x]+'" target="_blank" ><p>' + theList[x]+' </a> is currently <span class="offline" >offline</span></p><hr></div>');
+          }
+          else{
+            $('#theResults').append('<div class="streamer"><a href="https://www.twitch.tv/'+theList[x]+'" target="_blank" ><p>' + theList[x]+' </a> is currently <span class="online" >online</span><br>game: '+data.stream.game+'<br>viewers: '+data.stream.viewers+'<hr></p></div>');
+          }
+          x++;
+        }
+      });
+      
+    }
+    
+    
+  });
+
+
+</script>
+</body>
+</html>
