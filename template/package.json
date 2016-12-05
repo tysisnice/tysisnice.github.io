@@ -68,7 +68,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "tester": "mocha --require ./testSetup.js --compilers babel-core/register ./test/*test.js",
     "tester:watch": "npm test -- -w",
-     "deploy": "npm run build&&gh-pages -d build"
+    "deploy": "npm run build&&gh-pages -d build"
   },
   "jest": {
     "collectCoverageFrom": [
